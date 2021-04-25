@@ -42,7 +42,7 @@ public class UserController {
     }
 
     //UPDATE USER
-    @PutMapping("/updateUser")
+    @PutMapping("/updateUser/{id}")
     public User updateUser(@RequestBody User user, @PathVariable (value = "id") int id){
         User existingUser = this.userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Not found user id " + id));
