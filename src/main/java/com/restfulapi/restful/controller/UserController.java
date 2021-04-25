@@ -5,6 +5,8 @@ import com.restfulapi.restful.entity.User;
 import com.restfulapi.restful.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 public class UserController {
+
     @Autowired
     public UserRepository userRepository;
 
@@ -39,5 +42,21 @@ public class UserController {
     }
 
     //UPDATE USER
-    @PutMapping("")
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody User user, @PathVariable (value = "id") int id){
+        User existingUser = this.userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Not found user id " + id));
+        existingUser.setEmail(user.getEmail());
+        existingUser.setUsername(user.getUsername());
+        return this.userRepository.save(existingUser);
+    }
+
+    //DELETE USER
+    @DeleteMapping("/userList/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable (value = "id") int id){
+        User existingUser = this.userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Not found user id " + id));
+        this.userRepository.delete(existingUser);
+        return ResponseEntity.ok().build();
+    }
 }
