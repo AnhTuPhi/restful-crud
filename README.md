@@ -15,3 +15,4 @@ PUT | /updateUser/{id} | update user by id
 
 ** EXAMPLE**
 ![alt text](./images/1.png)
+![alt text](./images/2.png)
