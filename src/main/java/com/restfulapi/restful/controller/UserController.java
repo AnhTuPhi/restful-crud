@@ -1,6 +1,7 @@
 package com.restfulapi.restful.controller;
 
 import com.restfulapi.restful.repository.UserRepository;
+import com.restfulapi.restful.service.UserService;
 import com.restfulapi.restful.entity.User;
 import com.restfulapi.restful.exception.ResourceNotFoundException;
 
@@ -21,8 +22,8 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    public UserRepository userRepository;
-
+    private UserRepository userRepository;
+    
     //GET LIST ALL USER 
     @GetMapping("/userList")
     public List<User> getAllUser(){
@@ -33,6 +34,18 @@ public class UserController {
     @GetMapping("/userList/{id}")
     public User getUserById(@PathVariable (value = "id") int id){
         return this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with this id = "+ id));
+    }
+
+    //GET USER BY username
+    @GetMapping("/userList/username={username}")
+    public User getUserByUsername(@PathVariable("username") String username){
+    	return this.userRepository.findByUsername(username);
+    }
+
+    //GET USER BY email
+    @GetMapping("/userList/email={email}")
+    public User getUserByEmail(@PathVariable("email") String email){
+        return this.userRepository.findByEmail(email);
     }
 
     //CREATE USER
